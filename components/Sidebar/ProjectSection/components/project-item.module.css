@@ -1,0 +1,192 @@
+/*
+ * Best Practices Refactoring:
+ * 1. CSS Variables: Centralized theme properties for consistency and easier maintenance.
+ * 2. BEM-like Naming: Clearer, more specific class names to improve readability.
+ * 3. Simplified Selectors: Reduced nesting for better performance and maintainability.
+ * 4. Logical Grouping: Styles are grouped by component block (card, overlay, elements).
+ */
+
+.card {
+  --card-border-radius: 12px;
+  --card-padding: 12px;
+  --card-transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  --cover-height: 180px;
+  
+  --text-color-light: #ffffff;
+  --text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+
+  --shadow-base: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --button-size: 36px;
+  --button-bg: rgba(30, 30, 30, 0.5);
+  --button-bg-hover: rgba(50, 50, 50, 0.7);
+  --button-border-color: rgba(255, 255, 255, 0.2);
+  --button-border-hover-color: rgba(255, 255, 255, 0.4);
+
+  --button-danger-bg: rgba(150, 40, 40, 0.5);
+  --button-danger-bg-hover: rgba(180, 50, 50, 0.7);
+  --button-danger-border-color: rgba(255, 77, 79, 0.4);
+  --button-danger-border-hover-color: rgba(255, 77, 79, 0.6);
+
+  background: var(--text-color-light);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--shadow-base);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: var(--card-transition);
+  cursor: pointer;
+}
+
+.card_selected {
+  transform: translateY(-10px) scale(1.02);
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+/* --- Cover & Image --- */
+.card__cover {
+  width: 100%;
+  height: var(--cover-height);
+  position: relative;
+  overflow: hidden;
+}
+
+.card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--card-transition);
+}
+
+/* --- Overlay --- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: var(--card-padding);
+  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 40%, rgba(0,0,0,0.7) 100%);
+  pointer-events: none; /* Disable pointer events on the container */
+}
+
+.overlay > * {
+  pointer-events: auto; /* Re-enable pointer events on direct children */
+}
+
+.overlay__topRight {
+  position: absolute;
+  top: var(--card-padding);
+  right: var(--card-padding);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.overlay__bottomLeft {
+  position: absolute;
+  bottom: var(--card-padding);
+  left: var(--card-padding);
+  right: 80px; /* Avoid overlap with actions */
+}
+
+.overlay__bottomRight {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 2;
+}
+
+/* --- Overlay Elements --- */
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-color-light);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.description {
+  color: var(--text-color-light) !important;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-shadow: var(--text-shadow);
+  opacity: 0.9;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.timestamp {
+  font-size: 0.65rem;
+  color: var(--text-color-light);
+  opacity: 0.9;
+  text-shadow: var(--text-shadow);
+  font-weight: 500;
+}
+
+.statusTag {
+  font-weight: 700;
+  font-size: 10px;
+  padding: 2px 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  transition: var(--card-transition);
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: var(--text-color-light) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Status-specific colors */
+.statusTag_planning {
+  background: rgba(24, 144, 255, 0.8) !important;
+  border-color: rgba(24, 144, 255, 0.6) !important;
+  color: #ffffff !important;
+}
+
+.statusTag_on_going {
+  background: rgba(250, 173, 20, 0.8) !important;
+  border-color: rgba(250, 173, 20, 0.6) !important;
+  color: #ffffff !important;
+}
+
+.statusTag_completed {
+  background: rgba(82, 196, 26, 0.8) !important;
+  border-color: rgba(82, 196, 26, 0.6) !important;
+  color: #ffffff !important;
+}
+
+.actionButton {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  color: initial !important; /* Reset color to default */
+}
+
+.actionButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.actionButton_danger:hover {
+  background-color: rgba(255, 77, 79, 0.1) !important;
+  border-color: #ff4d4f !important;
+  color: #ff4d4f !important;
+}
+
+
+
+
+
