@@ -189,7 +189,7 @@ const Sidebar = ({
           
           {/* Search and Tabs - Fixed position */}
           {currentProject && (
-            <div className="mt-4 space-y-3">
+            <div className="space-y-3">
               <FeatureSearch
                 searchQuery={searchQuery}
                 onSearchChange={handleSearchChange}
