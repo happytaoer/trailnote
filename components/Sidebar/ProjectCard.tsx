@@ -105,25 +105,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     return baseClasses.join(' ');
   };
 
-  /**
-   * Get the status tag classes based on project status.
-   */
-  const getStatusTagClasses = (status: Project['status']): string => {
-    const baseClasses = [styles.statusTag];
-    switch (status) {
-      case 'planning':
-        baseClasses.push(styles.statusTagPlanning);
-        break;
-      case 'on_going':
-        baseClasses.push(styles.statusTagOnGoing);
-        break;
-      case 'completed':
-        baseClasses.push(styles.statusTagCompleted);
-        break;
-    }
-    return baseClasses.join(' ');
-  };
-  
   // Render skeleton UI when loading
   const renderSkeleton = () => {
     return (
