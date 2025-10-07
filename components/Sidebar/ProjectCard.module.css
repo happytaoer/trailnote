@@ -16,22 +16,18 @@
 /* Card status variants */
 .cardSelected {
   box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15), 0 4px 8px rgba(0, 0, 0, 0.08);
-  border: 2px solid rgba(59, 130, 246, 0.3);
 }
 
 .cardSelectedPlanning {
   box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15), 0 4px 8px rgba(0, 0, 0, 0.08);
-  border: 2px solid rgba(59, 130, 246, 0.3);
 }
 
 .cardSelectedOnGoing {
   box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15), 0 4px 8px rgba(0, 0, 0, 0.08);
-  border: 2px solid rgba(245, 158, 11, 0.3);
 }
 
 .cardSelectedCompleted {
   box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15), 0 4px 8px rgba(0, 0, 0, 0.08);
-  border: 2px solid rgba(34, 197, 94, 0.3);
 }
 
 /* Card hover effect */
