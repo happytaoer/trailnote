@@ -62,9 +62,6 @@ export const ViewImage: React.FC<ViewImageProps> = ({
 
   return (
     <div className="mb-4">
-      <h4 className="text-sm font-semibold text-gray-500 capitalize tracking-wider mb-2">
-        Images
-      </h4>
       <div
         className="relative rounded-lg overflow-hidden cursor-pointer"
         onClick={toggleTheaterMode}
