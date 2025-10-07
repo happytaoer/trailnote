@@ -127,41 +127,26 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   // Render skeleton UI when loading
   const renderSkeleton = () => {
     return (
-      <Card
-        className={styles.projectCardSkeleton}
-        styles={{ body: { padding: '16px 12px' } }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          {/* Top part skeleton */}
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <Skeleton.Input active style={{ width: '70%', height: 22, borderRadius: 4 }} />
-                <Skeleton.Input active style={{ width: '100%', height: 18, marginTop: 8, borderRadius: 4 }} />
-              </div>
-              <Skeleton.Button active size="small" style={{ marginLeft: 12, width: 70, height: 24, borderRadius: 12 }} />
-            </div>
-            
-            {/* Project description skeleton */}
-            <div style={{ marginTop: 8, marginBottom: 12 }}>
-              <Skeleton.Input active style={{ width: '100%', height: 16, borderRadius: 4 }} />
-              <Skeleton.Input active style={{ width: '80%', height: 16, marginTop: 4, borderRadius: 4 }} />
-            </div>
-            
-            {/* Project dates skeleton */}
-            <div style={{ marginTop: 8 }}>
-              <Skeleton.Input active style={{ width: 160, height: 16, borderRadius: 4 }} />
-            </div>
+      <div className={styles.projectCardSkeleton}>
+        <div className={styles.skeletonImageContainer}>
+          <Skeleton.Image active className={styles.skeletonImage} />
+          
+          {/* Skeleton overlays */}
+          <div className={styles.skeletonTitleOverlay}>
+            <Skeleton.Input active style={{ width: '60%', height: 20 }} />
+            <Skeleton.Button active size="small" style={{ width: 60, height: 20 }} />
           </div>
           
-          {/* Bottom part: thumbnail skeleton */}
-          <div className={`${styles.thumbnailContainer} ${styles.projectThumbnailContainer}`} style={{ marginTop: 12 }}>
-            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Skeleton.Image active className={styles.skeletonImageFull} />
-            </div>
+          <div className={styles.skeletonDescriptionOverlay}>
+            <Skeleton.Input active style={{ width: '100%', height: 14 }} />
+            <Skeleton.Input active style={{ width: '80%', height: 14, marginTop: 4 }} />
+          </div>
+          
+          <div className={styles.skeletonDateOverlay}>
+            <Skeleton.Input active style={{ width: 120, height: 16 }} />
           </div>
         </div>
-      </Card>
+      </div>
     );
   };
 
@@ -171,108 +156,106 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {isLoading ? (
         renderSkeleton()
       ) : currentProject ? (
-        <Card
+        <div 
           className={getCardClasses()}
-          styles={{ body: { padding: '16px 12px' } }}
           onClick={isSharedMode ? undefined : () => setIsModalOpen(true)}
-          hoverable={!isSharedMode}
         >
-
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            {/* Top part: Project info, time and status */}
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-              {/* First row: Title and Status Tag */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                <Title level={5} className={styles.title} style={{ flex: 1, minWidth: 0, margin: 0 }}>
-                  {currentProject.project_name}
-                </Title>
-                {/* Only show Status Tag in non-shared mode */}
-                {!isSharedMode && (
-                  <Tag
-                    color={getStatusColor(currentProject.status)}
-                    className={getStatusTagClasses(currentProject.status)}
-                    data-testid="project-status-tag"
-                  >
-                    {getStatusLabel(currentProject.status)}
-                  </Tag>
-                )}
-              </div>
-              
-              {/* Second row: Description */}
-              {currentProject.description && (
-                <Typography.Paragraph
-                  ellipsis={{ rows: 2, tooltip: currentProject.description }}
-                  className={styles.projectDescription}
-                  style={{ margin: 0 }}
-                >
-                  {currentProject.description}
-                </Typography.Paragraph>
-              )}
-            {/* Project dates - only show if start_date or end_date exists */}
-            {(currentProject.start_date || currentProject.end_date) && (
-              <div className={styles.dateContainer}>
-                <CalendarOutlined className={styles.dateIcon} />
-                <Typography.Text className={styles.dateText}>
-                  {currentProject.start_date 
-                    ? format(new Date(currentProject.start_date), 'MMM d, yyyy') 
-                    : ''}
-                  {currentProject.start_date && currentProject.end_date ? ' ~ ' : ''}
-                  {currentProject.end_date 
-                    ? format(new Date(currentProject.end_date), 'MMM d, yyyy') 
-                    : ''}
-                </Typography.Text>
-              </div>
-            )}
-          </div>
-          
-          {/* Bottom part: Project thumbnail image */}
-          <div className={`${styles.thumbnailContainer} ${styles.projectThumbnailContainer}`} style={{ marginTop: '12px' }}>
+          {/* Background Image */}
+          <div className={styles.imageBackground}>
             <Image
               src={currentProject.cover_image_url || '/map_default.png'}
               alt={currentProject.project_name}
               fill
               sizes="(max-width: 768px) 100vw, 300px"
-              className={styles.projectThumbnail}
+              className={styles.backgroundImage}
               style={{ objectFit: 'cover' }}
               unoptimized={!currentProject.cover_image_storage_path}
               priority={false}
             />
+          </div>
+          
+          {/* Gradient Overlay */}
+          <div className={styles.gradientOverlay} />
+          
+          {/* Content Overlays */}
+          <div className={styles.contentOverlays}>
+            {/* Title and Status */}
+            <div className={styles.headerContent}>
+              <h3 className={styles.projectTitle}>
+                {currentProject.project_name}
+              </h3>
+              {!isSharedMode && (
+                <span 
+                  className={`${styles.statusBadge} ${styles[`status${currentProject.status.charAt(0).toUpperCase() + currentProject.status.slice(1).replace('_', '')}`]}`}
+                  data-testid="project-status-tag"
+                >
+                  {getStatusLabel(currentProject.status)}
+                </span>
+              )}
+            </div>
             
-            {/* Action buttons overlay - only show in non-shared mode */}
-            {!isSharedMode && (
-              <div className={styles.actionButtons}>
-                <Tooltip title="Share" placement="top">
-                  <Button
-                    type="text"
-                    size="small"
-                    icon={<ShareAltOutlined />}
-                    onClick={handleShareClick}
-                    className={styles.actionButton}
-                  />
-                </Tooltip>
-                <Tooltip title="Edit" placement="top">
-                  <Button
-                    type="text"
-                    size="small"
-                    icon={<EditOutlined />}
-                    onClick={handleEditClick}
-                    className={styles.actionButton}
-                  />
-                </Tooltip>
-                <Tooltip title="Delete" placement="top">
-                  <Button
-                    type="text"
-                    size="small"
-                    icon={<DeleteOutlined />}
-                    onClick={handleDeleteClick}
-                    className={`${styles.actionButton} ${styles.deleteButton}`}
-                  />
-                </Tooltip>
+            {/* Description */}
+            {currentProject.description && (
+              <div className={styles.descriptionContent}>
+                <p className={styles.projectDescription}>
+                  {currentProject.description}
+                </p>
               </div>
             )}
+            
+            {/* Footer with Date and Actions */}
+            <div className={styles.footerContent}>
+              {/* Date */}
+              {(currentProject.start_date || currentProject.end_date) && (
+                <div className={styles.dateInfo}>
+                  <CalendarOutlined className={styles.dateIcon} />
+                  <span className={styles.dateText}>
+                    {currentProject.start_date 
+                      ? format(new Date(currentProject.start_date), 'MMM d, yyyy') 
+                      : ''}
+                    {currentProject.start_date && currentProject.end_date ? ' ~ ' : ''}
+                    {currentProject.end_date 
+                      ? format(new Date(currentProject.end_date), 'MMM d, yyyy') 
+                      : ''}
+                  </span>
+                </div>
+              )}
+              
+              {/* Action Buttons */}
+              {!isSharedMode && (
+                <div className={styles.actionButtonsGroup}>
+                  <Tooltip title="Share" placement="top">
+                    <button
+                      type="button"
+                      onClick={handleShareClick}
+                      className={styles.actionBtn}
+                    >
+                      <ShareAltOutlined />
+                    </button>
+                  </Tooltip>
+                  <Tooltip title="Edit" placement="top">
+                    <button
+                      type="button"
+                      onClick={handleEditClick}
+                      className={styles.actionBtn}
+                    >
+                      <EditOutlined />
+                    </button>
+                  </Tooltip>
+                  <Tooltip title="Delete" placement="top">
+                    <button
+                      type="button"
+                      onClick={handleDeleteClick}
+                      className={`${styles.actionBtn} ${styles.deleteBtn}`}
+                    >
+                      <DeleteOutlined />
+                    </button>
+                  </Tooltip>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </Card>
       ) : (
         <ProjectEmpty onClick={() => setIsModalOpen(true)} />
       )}
