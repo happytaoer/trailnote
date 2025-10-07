@@ -131,7 +131,26 @@ const ViewMode: React.FC<ViewModeProps> = ({
         <Space>
           {/* Only show Edit button when not in read-only mode */}
           {!isSharedMode && (
-            <Button type="primary" onClick={onEdit} icon={<FaEdit />}>Edit</Button>
+            <Button 
+              type="primary" 
+              onClick={onEdit} 
+              icon={<FaEdit />}
+              style={{
+                background: 'rgba(59, 130, 246, 0.8)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 4px 16px rgba(59, 130, 246, 0.2)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(37, 99, 235, 0.9)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(59, 130, 246, 0.8)';
+              }}
+            >
+              Edit
+            </Button>
           )}
         </Space>
       </div>

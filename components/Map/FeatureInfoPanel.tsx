@@ -194,11 +194,25 @@ const FeatureInfoPanel: React.FC<FeatureInfoPanelProps> = ({
         right: 16, 
         width: 320, 
         zIndex: 1000,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+        background: 'rgba(255, 255, 255, 0.85)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        border: '1px solid rgba(255, 255, 255, 0.3)',
+        borderRadius: '12px',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 16px rgba(0, 0, 0, 0.08)',
         padding: 0,
         overflow: 'hidden'
       }}
-      styles={{ body: { padding: "10px" } }}
+      styles={{ 
+        body: { 
+          padding: "10px",
+          background: 'transparent'
+        },
+        header: {
+          background: 'rgba(255, 255, 255, 0.1)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.2)'
+        }
+      }}
     >
       {contextHolder}
         {isEditMode ? (

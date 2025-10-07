@@ -414,7 +414,12 @@ const EditMode: React.FC<EditModeProps> = ({
           <div className="grid grid-cols-2 gap-2 mt-2">
             {images.map(image => (
               <div key={image.id} className="relative group">
-                <div className="w-full h-24 bg-gray-100 rounded-md overflow-hidden relative">
+                <div className="w-full h-24 rounded-md overflow-hidden relative" style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)'
+                }}>
                   <Image
                     src={image.url}
                     alt=""
@@ -430,7 +435,13 @@ const EditMode: React.FC<EditModeProps> = ({
                   )}
                 </div>
                 <button 
-                  className={`absolute top-1 right-1 bg-white rounded-full p-1 shadow-md hover:bg-gray-100 z-10 transition-all duration-200 ${hoverTrashId === image.id ? 'scale-110 rotate-12' : ''}`}
+                  className={`absolute top-1 right-1 rounded-full p-1 z-10 transition-all duration-200 ${hoverTrashId === image.id ? 'scale-110 rotate-12' : ''}`}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                  }}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteImage(image.id);
@@ -454,13 +465,38 @@ const EditMode: React.FC<EditModeProps> = ({
       
       <div className="flex justify-end gap-2">
         <button
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md transition-colors cursor-pointer"
+          className="px-4 py-2 rounded-md transition-all cursor-pointer"
+          style={{
+            background: 'rgba(156, 163, 175, 0.8)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            color: '#374151'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(156, 163, 175, 0.9)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(156, 163, 175, 0.8)';
+          }}
           onClick={onCancel}
         >
           Cancel
         </button>
         <button
-          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors flex items-center cursor-pointer"
+          className="px-4 py-2 text-white rounded-md transition-all flex items-center cursor-pointer"
+          style={{
+            background: 'rgba(59, 130, 246, 0.8)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.3)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(37, 99, 235, 0.9)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(59, 130, 246, 0.8)';
+          }}
           onClick={handleSave}
           disabled={isSaving}
         >

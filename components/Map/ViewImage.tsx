@@ -69,7 +69,12 @@ export const ViewImage: React.FC<ViewImageProps> = ({
         className="relative rounded-lg overflow-hidden cursor-pointer"
         onClick={toggleTheaterMode}
       >
-        <div className="w-full h-48 bg-gray-100 relative">
+        <div className="w-full h-48 relative" style={{
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)'
+        }}>
           <Tooltip 
             title={images[currentImageIndex].description} 
             placement="top"
@@ -88,7 +93,13 @@ export const ViewImage: React.FC<ViewImageProps> = ({
           {images.length > 1 && (
             <>
               <button
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 shadow-md"
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full p-2"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.8)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                }}
                 onClick={(e) => {
                   e.stopPropagation();
                   goToPrevImage();
@@ -97,7 +108,13 @@ export const ViewImage: React.FC<ViewImageProps> = ({
                 <FaChevronLeft className="text-gray-700" />
               </button>
               <button
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 shadow-md"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full p-2"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.8)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                }}
                 onClick={(e) => {
                   e.stopPropagation();
                   goToNextImage();
@@ -107,7 +124,14 @@ export const ViewImage: React.FC<ViewImageProps> = ({
               </button>
             </>
           )}
-          <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
+          <div 
+            className="absolute bottom-2 right-2 text-white text-xs px-2 py-1 rounded-full"
+            style={{
+              background: 'rgba(0, 0, 0, 0.6)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)'
+            }}
+          >
             {currentImageIndex + 1} / {images.length}
           </div>
         </div>
