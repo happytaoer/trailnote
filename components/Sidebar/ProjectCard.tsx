@@ -128,22 +128,34 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const renderSkeleton = () => {
     return (
       <div className={styles.projectCardSkeleton}>
-        <div className={styles.skeletonImageContainer}>
-          <Skeleton.Image active className={styles.skeletonImage} />
-          
-          {/* Skeleton overlays */}
+        {/* Background skeleton */}
+        <div className={styles.skeletonBackground} />
+        
+        {/* Gradient overlay similar to real card */}
+        <div className={styles.skeletonGradientOverlay} />
+        
+        {/* Content skeleton overlays */}
+        <div className={styles.skeletonContentOverlays}>
+          {/* Title and status skeleton */}
           <div className={styles.skeletonTitleOverlay}>
-            <Skeleton.Input active style={{ width: '60%', height: 20 }} />
-            <Skeleton.Button active size="small" style={{ width: 60, height: 20 }} />
+            <div className={styles.skeletonTitleBar} />
+            <div className={styles.skeletonStatusBadge} />
           </div>
           
+          {/* Description skeleton */}
           <div className={styles.skeletonDescriptionOverlay}>
-            <Skeleton.Input active style={{ width: '100%', height: 14 }} />
-            <Skeleton.Input active style={{ width: '80%', height: 14, marginTop: 4 }} />
+            <div className={styles.skeletonDescriptionLine1} />
+            <div className={styles.skeletonDescriptionLine2} />
           </div>
           
-          <div className={styles.skeletonDateOverlay}>
-            <Skeleton.Input active style={{ width: 120, height: 16 }} />
+          {/* Footer skeleton */}
+          <div className={styles.skeletonFooterOverlay}>
+            <div className={styles.skeletonDateBadge} />
+            <div className={styles.skeletonActionButtons}>
+              <div className={styles.skeletonActionBtn} />
+              <div className={styles.skeletonActionBtn} />
+              <div className={styles.skeletonActionBtn} />
+            </div>
           </div>
         </div>
       </div>

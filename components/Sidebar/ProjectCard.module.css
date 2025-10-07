@@ -244,43 +244,171 @@
   overflow: hidden;
   margin-bottom: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
-  background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
-.skeletonImageContainer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.skeletonImage {
-  width: 100%;
-  height: 100%;
-}
-
-.skeletonTitleOverlay {
+/* Skeleton background */
+.skeletonBackground {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    #f1f5f9 0%,
+    #e2e8f0 25%,
+    #f1f5f9 50%,
+    #e2e8f0 75%,
+    #f1f5f9 100%
+  );
+  background-size: 400% 400%;
+  animation: skeletonShimmer 2s ease-in-out infinite;
+}
+
+/* Skeleton gradient overlay */
+.skeletonGradientOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg, 
+    rgba(0, 0, 0, 0.1) 0%, 
+    rgba(0, 0, 0, 0.05) 30%, 
+    rgba(0, 0, 0, 0.05) 70%, 
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  z-index: 1;
+}
+
+/* Skeleton content overlays */
+.skeletonContentOverlays {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+/* Title skeleton */
+.skeletonTitleOverlay {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 8px;
+  margin-bottom: 8px;
 }
 
+.skeletonTitleBar {
+  height: 20px;
+  width: 60%;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.skeletonStatusBadge {
+  height: 20px;
+  width: 60px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+/* Description skeleton */
 .skeletonDescriptionOverlay {
-  position: absolute;
-  top: 50px;
-  left: 12px;
-  right: 12px;
+  flex: 1;
+  margin-bottom: 8px;
 }
 
-.skeletonDateOverlay {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
+.skeletonDescriptionLine1 {
+  height: 14px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  margin-bottom: 4px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+.skeletonDescriptionLine2 {
+  height: 14px;
+  width: 80%;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+/* Footer skeleton */
+.skeletonFooterOverlay {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.skeletonDateBadge {
+  height: 28px;
+  width: 120px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.skeletonActionButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.skeletonActionBtn {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.skeletonActionBtn:nth-child(1) {
+  animation-delay: 1s;
+}
+
+.skeletonActionBtn:nth-child(2) {
+  animation-delay: 1.2s;
+}
+
+.skeletonActionBtn:nth-child(3) {
+  animation-delay: 1.4s;
+}
+
+/* Skeleton animations */
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes skeletonPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 /* Responsive design */
@@ -314,5 +442,29 @@
     height: 160px;
     border-radius: 12px;
     margin-bottom: 8px;
+  }
+
+  .skeletonTitleBar {
+    height: 18px;
+  }
+
+  .skeletonStatusBadge {
+    height: 18px;
+    width: 50px;
+  }
+
+  .skeletonDescriptionLine1,
+  .skeletonDescriptionLine2 {
+    height: 12px;
+  }
+
+  .skeletonDateBadge {
+    height: 24px;
+    width: 100px;
+  }
+
+  .skeletonActionBtn {
+    width: 32px;
+    height: 32px;
   }
 }
