@@ -2,10 +2,8 @@
 
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Marker, Route, Image } from '@/types';
-import { Tabs, Typography, Empty, Space, Badge, Skeleton, Card, Button, Tooltip } from 'antd';
-import { EnvironmentOutlined, NodeIndexOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
+import { Typography, Empty, Space, Skeleton, Card } from 'antd';
 import FeatureItem from './FeatureItem';
-import FeatureSearch from './FeatureSearch';
 import { useSelectedFeatureStore } from '@/stores';
 
 interface FeatureListProps {
@@ -14,6 +12,10 @@ interface FeatureListProps {
   isLoading?: boolean;
   isSharedMode?: boolean;
   imagesByFeature?: Record<string, Image[]>;
+  searchQuery: string;
+  statusFilter: 'visited' | 'not_visited' | null;
+  activeTab: string;
+  sortDirection: 'asc' | 'desc';
 }
 
 type SortField = 'name';
@@ -24,7 +26,11 @@ const FeatureList: React.FC<FeatureListProps> = React.memo(({
   routes,
   isLoading = false,
   isSharedMode = false,
-  imagesByFeature = {}
+  imagesByFeature = {},
+  searchQuery,
+  statusFilter,
+  activeTab,
+  sortDirection
 }) => {
   const { Text } = Typography;
   const isMountedRef = useRef(true);
@@ -32,50 +38,11 @@ const FeatureList: React.FC<FeatureListProps> = React.memo(({
   // Use Zustand store for selection state management and map focus
   const { selectedFeature, setSelectedFeature, isFeatureSelected, setFeatureToFocus } = useSelectedFeatureStore();
   
-  // Internal state management for search and filter
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [statusFilter, setStatusFilter] = useState<'visited' | 'not_visited' | null>(null);
-  
-  // Tab state management
-  const [activeTab, setActiveTab] = useState<string>('markers');
-  const [isManualTabSwitch, setIsManualTabSwitch] = useState<boolean>(false);
-  const [lastSelectedFeatureId, setLastSelectedFeatureId] = useState<number | null>(null);
-  
-  // Auto switch tab based on selected feature (only if not manually switched or new feature selected)
-  useEffect(() => {
-    if (selectedFeature) {
-      const isNewFeatureSelection = selectedFeature.id !== lastSelectedFeatureId;
-      
-      if (isNewFeatureSelection) {
-        // Reset manual switch flag when a new feature is selected
-        setIsManualTabSwitch(false);
-        setLastSelectedFeatureId(selectedFeature.id);
-      }
-      
-      // Auto switch only if not manually switched or it's a new feature selection
-      if (!isManualTabSwitch || isNewFeatureSelection) {
-        const targetTab = selectedFeature.type === 'marker' ? 'markers' : 'routes';
-        if (activeTab !== targetTab) {
-          setActiveTab(targetTab);
-        }
-      }
-    }
-  }, [selectedFeature, activeTab, isManualTabSwitch, lastSelectedFeatureId]);
-  
-  // Handle manual tab change
-  const handleTabChange = (key: string): void => {
-    setIsManualTabSwitch(true);
-    setActiveTab(key);
-  };
-  
   useEffect(() => {
     return () => {
       isMountedRef.current = false;
     };
   }, []);
-  
-  // Sorting state
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   
   // Internal handlers - now directly handle map focus via Zustand
   const handleFeatureClick = (feature: Marker | Route, type: 'marker' | 'route'): void => {
@@ -92,13 +59,6 @@ const FeatureList: React.FC<FeatureListProps> = React.memo(({
     setFeatureToFocus({ feature, type, openInEditMode: true });
   };
 
-  const handleSearchChange = (query: string): void => {
-    setSearchQuery(query);
-  };
-
-  const handleStatusFilterChange = (status: 'visited' | 'not_visited' | null): void => {
-    setStatusFilter(status);
-  };
   
   // Filter markers based on search query and status filter
   const filteredMarkers = useMemo(() => {
@@ -280,24 +240,6 @@ const FeatureList: React.FC<FeatureListProps> = React.memo(({
     );
   };
 
-  // Toggle sort direction
-  const toggleSort = (): void => {
-    setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
-  };
-  
-  // Render sort button
-  const renderSortButton = (): React.ReactNode => {
-    return (
-      <Tooltip title={`Sort by name (${sortDirection === 'asc' ? 'A-Z' : 'Z-A'})`}>
-        <Button 
-          type="text"
-          size="small"
-          icon={sortDirection === 'desc' ? <SortDescendingOutlined /> : <SortAscendingOutlined />}
-          onClick={toggleSort}
-        />
-      </Tooltip>
-    );
-  };
 
   // Always use filtered counts to reflect both search query and status filter
   const placesCount: number = filteredMarkers.length;
@@ -318,55 +260,22 @@ const FeatureList: React.FC<FeatureListProps> = React.memo(({
     );
   }
 
-  const items = [
-    {
-      key: 'markers',
-      label: (
-        <Tooltip title="Places" placement="top">
-          <Badge count={placesCount} size="small">
-            <EnvironmentOutlined />
-          </Badge>
-        </Tooltip>
-      ),
-      children: <div style={{ height: '100%', overflow: 'auto' }}>{renderMarkers()}</div>
-    },
-    {
-      key: 'routes',
-      label: (
-        <Tooltip title="Routes" placement="top">
-          <Badge count={routesCount} size="small">
-            <NodeIndexOutlined />
-          </Badge>
-        </Tooltip>
-      ),
-      children: <div style={{height: '100%', overflow: 'auto' }}>{renderRoutes()}</div>
+
+  // Render content based on active tab
+  const renderContent = () => {
+    if (activeTab === 'markers') {
+      return renderMarkers();
+    } else {
+      return renderRoutes();
     }
-  ];
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {/* Search and Filter Section */}
-      <div style={{ padding: '0 16px 16px 16px' }}>
-        <FeatureSearch
-          searchQuery={searchQuery}
-          statusFilter={statusFilter}
-          onSearchChange={handleSearchChange}
-          onStatusFilterChange={handleStatusFilterChange}
-          isSharedMode={isSharedMode}
-        />
+      {/* Content */}
+      <div style={{ flex: 1, overflow: 'auto' }}>
+        {renderContent()}
       </div>
-      
-      {/* Tabs Section */}
-      <Tabs 
-        items={items}
-        activeKey={activeTab}
-        onChange={handleTabChange}
-        centered
-        size="small"
-        style={{ display: 'flex', flexDirection: 'column', flex: 1 }}
-        tabBarStyle={{ margin: 0 }}
-        tabBarExtraContent={renderSortButton()}
-      />
     </div>
   );
 });

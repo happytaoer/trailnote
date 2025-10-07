@@ -30,14 +30,15 @@ TrailNote is a feature-rich, map-centric web application designed for outdoor en
 Follow these instructions to set up and run the project locally.
 
 ### 1. Clone the Repository
-
+  nknjknij-pkmjk
 ```bash
 git clone https://github.com/your-username/trailnote.git
 cd trailnote
 ```
 
-### 2. Set Up Environment Variables
-
+### 2. Set Up Environment Variablesjks
+  asdf
+  姜涛
 This project uses Supabase for its backend. You will need to create a Supabase project and get your API keys.
 
 1.  Create a `.env.local` file in the root of the project.
